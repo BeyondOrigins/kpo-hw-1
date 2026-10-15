@@ -6,14 +6,14 @@ import (
 )
 
 type Repo struct {
-	items []items.Identifiable
+	items []items.Item
 }
 
-func (repo *Repo) AddItem(item items.Identifiable) {
+func (repo *Repo) AddItem(item items.Item) {
 	repo.items = append(repo.items, item)
 }
 
-func (repo *Repo) GetItem(id items.ID) items.Identifiable {
+func (repo *Repo) GetItem(id items.ID) items.Item {
 	for i := 0; i < len(repo.items); i++ {
 		if repo.items[i].ID() == id {
 			return repo.items[i]

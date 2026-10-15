@@ -26,7 +26,7 @@ func (s *Service) GetEnergyConsumption() int {
 	return s.energyConsumption
 }
 
-func (s *Service) AddItem(item items.Identifiable) {
+func (s *Service) AddItem(item items.Item) {
 	// обновить подсчёт потребления энергии в день
 	if с, ok := item.(items.EnergyConsumer); ok {
 		s.energyConsumption += 24 * с.KWh()
