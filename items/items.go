@@ -17,3 +17,20 @@ func (obj *itemBase) Name() string {
 func (obj *itemBase) Easiness() int {
 	return obj.easiness
 }
+
+type energy struct {
+	kwh int
+}
+
+func (e *energy) KWh() int {
+	return e.kwh
+}
+
+type Device struct {
+	itemBase
+}
+
+type ElectricDevice struct {
+	itemBase
+	energy
+}
