@@ -10,22 +10,21 @@ import (
 	"hw-1/ui"
 )
 
-const addUsage = `add <вид> <номер> "<название>" [простота] [кВт·ч/сут]`
+const addUsage = `add <вид> <номер> "<название>" <простота> [кВт·ч/сут]`
 
 func (app *App) add(cmd ui.Command) error {
-	if n := len(cmd.Args); n < 3 || n > 5 {
+	if n := len(cmd.Args); n < 4 || n > 5 {
 		return fmt.Errorf("%w: %s", ui.ErrArgsCount, addUsage)
 	}
 	id, err := cmd.IntArg(1)
 	if err != nil {
 		return err
 	}
-	spec := items.Spec{ID: items.ID(id), Name: cmd.Args[2]}
-	if len(cmd.Args) > 3 {
-		if spec.Easiness, err = cmd.IntArg(3); err != nil {
-			return err
-		}
+	easiness, err := cmd.IntArg(3)
+	if err != nil {
+		return err
 	}
+	spec := items.Spec{ID: items.ID(id), Name: cmd.Args[2], Easiness: easiness}
 	if len(cmd.Args) > 4 {
 		if spec.KWh, err = cmd.IntArg(4); err != nil {
 			return err
@@ -141,7 +140,7 @@ var demoScript = []string{
 	`add scooter 4 "Самокат без тормозов" 12 1`,
 	`add bike 3 "Дубликат номера" 5`,
 	`add helmet 11 "Шлем с фонарём" 9 1`,
-	`add rocket 5 "Ракета"`,
+	`add rocket 5 "Ракета" 5`,
 	"inventory",
 	"beginners",
 	"energy",

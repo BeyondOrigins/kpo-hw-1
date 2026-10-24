@@ -41,7 +41,7 @@ func TestParseLine_Errors(t *testing.T) {
 }
 
 func TestCommandArgs(t *testing.T) {
-	cmd := Command{Name: "x", Args: []string{"5", "0,4", "abc", "NaN"}}
+	cmd := Command{Name: "x", Args: []string{"5", "abc"}}
 
 	if err := cmd.RequireArgs(3); !errors.Is(err, ErrArgsCount) {
 		t.Errorf("RequireArgs: got %v", err)
@@ -49,14 +49,8 @@ func TestCommandArgs(t *testing.T) {
 	if n, err := cmd.IntArg(0); err != nil || n != 5 {
 		t.Errorf("IntArg(0) = %d, %v", n, err)
 	}
-	if f, err := cmd.FloatArg(1); err != nil || f != 0.4 {
-		t.Errorf("FloatArg(1) = %v, %v", f, err)
-	}
-	if _, err := cmd.IntArg(2); !errors.Is(err, ErrBadArg) {
-		t.Errorf("IntArg(2): got %v", err)
-	}
-	if _, err := cmd.FloatArg(3); !errors.Is(err, ErrBadArg) {
-		t.Errorf("FloatArg(NaN): got %v", err)
+	if _, err := cmd.IntArg(1); !errors.Is(err, ErrBadArg) {
+		t.Errorf("IntArg(1): got %v", err)
 	}
 	if _, err := cmd.Arg(10); !errors.Is(err, ErrArgsCount) {
 		t.Errorf("Arg(10): got %v", err)

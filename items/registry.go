@@ -27,10 +27,10 @@ func NewRegistry() *Registry {
 
 func (r *Registry) Register(kind string, f Factory) error {
 	if f == nil {
-		return fmt.Errorf("register %q: nil factory", kind)
+		return fmt.Errorf("регистрация %q: нет фабрики", kind)
 	}
 	if _, exists := r.factories[kind]; exists {
-		return fmt.Errorf("register %q: already registered", kind)
+		return fmt.Errorf("регистрация %q: вид уже зарегистрирован", kind)
 	}
 	r.factories[kind] = f
 	return nil

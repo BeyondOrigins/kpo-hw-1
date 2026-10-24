@@ -12,7 +12,7 @@ const MinBeginnerEasiness = 6
 
 var (
 	ErrNilItem   = errors.New("устройство не передано")
-	ErrNoID      = errors.New("нет инвентарного номера")
+	ErrNoID      = errors.New("инвентарный номер должен быть положительным")
 	ErrDuplicate = errors.New("инвентарный номер уже занят")
 )
 

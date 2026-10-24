@@ -57,6 +57,12 @@ func TestFactories_Errors(t *testing.T) {
 			t.Errorf("без названия: got %v", err)
 		}
 	}
+	for _, name := range []string{"   ", "a\tb", "a\nb"} {
+		_, err := NewDevice(Spec{ID: 1, Name: name})
+		if !errors.Is(err, ErrNoName) && !errors.Is(err, ErrBadName) {
+			t.Errorf("название %q: got %v", name, err)
+		}
+	}
 	for _, f := range []Factory{NewDevice, VehicleFactory(KindBike)} {
 		if _, err := f(Spec{ID: 1, Name: "X", KWh: 1}); !errors.Is(err, ErrNoEnergy) {
 			t.Errorf("расход у неэлектрического вида: got %v", err)

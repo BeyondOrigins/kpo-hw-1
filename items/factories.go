@@ -3,6 +3,8 @@ package items
 import (
 	"errors"
 	"fmt"
+	"strings"
+	"unicode"
 )
 
 const (
@@ -16,6 +18,7 @@ const (
 
 var (
 	ErrNoName   = errors.New("нет названия")
+	ErrBadName  = errors.New("название содержит управляющие символы")
 	ErrNoEnergy = errors.New("этот вид не потребляет энергию")
 )
 
@@ -56,8 +59,11 @@ func ElectricVehicleFactory(kind string) Factory {
 }
 
 func newBase(s Spec, electric bool) (itemBase, error) {
-	if s.Name == "" {
+	if strings.TrimSpace(s.Name) == "" {
 		return itemBase{}, ErrNoName
+	}
+	if strings.ContainsFunc(s.Name, unicode.IsControl) {
+		return itemBase{}, fmt.Errorf("%w: %q", ErrBadName, s.Name)
 	}
 	if !electric && s.KWh != 0 {
 		return itemBase{}, fmt.Errorf("%w: %q", ErrNoEnergy, s.Name)

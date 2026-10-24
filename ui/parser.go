@@ -3,7 +3,6 @@ package ui
 import (
 	"errors"
 	"fmt"
-	"math"
 	"strconv"
 	"strings"
 	"unicode"
@@ -23,7 +22,7 @@ type Command struct {
 }
 
 // ParseLine разбивает строку на слова по пробелам. Слова с пробелами
-// берутся в двойные кавычки: add scooter VK-1 "Ninebot Max".
+// берутся в двойные кавычки: add scooter 1 "Ninebot Max" 7 1.
 // Внутри кавычек \" и \\ экранируют кавычку и обратный слэш.
 func ParseLine(line string) (Command, error) {
 	tokens, err := tokenize(line)
@@ -106,17 +105,4 @@ func (c Command) IntArg(i int) (int, error) {
 			ErrBadArg, i+1, s)
 	}
 	return n, nil
-}
-
-func (c Command) FloatArg(i int) (float64, error) {
-	s, err := c.Arg(i)
-	if err != nil {
-		return 0, err
-	}
-	f, err := strconv.ParseFloat(strings.Replace(s, ",", ".", 1), 64)
-	if err != nil || math.IsNaN(f) || math.IsInf(f, 0) {
-		return 0, fmt.Errorf("%w: аргумент №%d (%q) должен быть числом",
-			ErrBadArg, i+1, s)
-	}
-	return f, nil
 }
